@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unilever S&OP - PowerPoint Extension</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- PowerPoint Interface -->
+    <div class="powerpoint-interface">
+        <!-- PowerPoint Top Ribbon -->
+        <div class="ppt-ribbon">
+            <div class="ppt-ribbon-tabs">
+                <div class="ppt-tab">File</div>
+                <div class="ppt-tab active">Home</div>
+                <div class="ppt-tab">Insert</div>
+                <div class="ppt-tab">Design</div>
+                <div class="ppt-tab">Transitions</div>
+                <div class="ppt-tab">Animations</div>
+                <div class="ppt-tab">Slide Show</div>
+                <div class="ppt-tab">Review</div>
+                <div class="ppt-tab">View</div>
+            </div>
+            <div class="ppt-ribbon-title">Presentation4</div>
+            <div class="ppt-ribbon-controls">
+                <button class="ppt-control-btn">💾</button>
+                <button class="ppt-control-btn">↶</button>
+                <button class="ppt-control-btn">↷</button>
+                <button class="ppt-control-btn highlight">🔍 Share</button>
+            </div>
+        </div>
+
+        <!-- PowerPoint Main Area -->
+        <div class="ppt-main">
+            <!-- Left Sidebar - Slide Thumbnails -->
+            <div class="ppt-sidebar">
+                <div class="ppt-sidebar-header">
+                    <button class="sidebar-view-btn active">📄</button>
+                    <button class="sidebar-view-btn">📊</button>
+                </div>
+                <div class="ppt-slide-list" id="slide-list">
+                    <div class="ppt-slide-thumb active" data-slide="1">
+                        <div class="slide-number">1</div>
+                        <div class="slide-preview">
+                            <div class="slide-preview-title">Title Slide</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="add-slide-btn">+ New Slide</button>
+            </div>
+
+            <!-- Center - Slide Canvas -->
+            <div class="ppt-canvas">
+                <div class="ppt-canvas-controls">
+                    <div class="zoom-controls">
+                        <button class="zoom-btn">−</button>
+                        <span class="zoom-level">100%</span>
+                        <button class="zoom-btn">+</button>
+                    </div>
+                </div>
+                <div class="ppt-slide-container">
+                    <div class="ppt-slide" id="current-slide">
+                        <div class="slide-content empty-state">
+                            <div class="empty-icon">📊</div>
+                            <h2>Ready to Generate Slides</h2>
+                            <p>Use the Assemble panel on the right to create your S&OP slides</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Extension -->
+            <div class="ppt-extension-panel">
+                <!-- Workspace Selection Screen -->
+                <div id="workspace-selection" class="extension-screen active">
+                    <div class="extension-header">
+                        <div class="header-title">
+                            <h1>AssembleV2 Insights</h1>
+                        </div>
+                        <button class="icon-btn close-btn">✕</button>
+                    </div>
+                    <div class="extension-content">
+                        <h2 class="section-title">Select Workspace</h2>
+                        <div class="workspace-list">
+                            <div class="workspace-card" data-workspace="unilever-sop">
+                                <div class="workspace-icon">U</div>
+                                <div class="workspace-info">
+                                    <h3>Unilever S&OP</h3>
+                                    <p>Monthly performance tracking</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Extension Screen -->
+                <div id="main-screen" class="extension-screen">
+                    <div class="extension-header">
+                        <div class="header-content">
+                            <button class="icon-btn back-btn" id="back-to-workspace">←</button>
+                            <div class="header-title">
+                                <h1>Monthly Media Performance</h1>
+                                <p class="subtitle">AI S&OP</p>
+                            </div>
+                        </div>
+                        <div class="header-actions">
+                            <button class="icon-btn info-btn">ℹ</button>
+                            <button class="icon-btn close-btn">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Query Bar -->
+                    <div class="query-bar">
+                        <div class="query-input-container">
+                            <input
+                                type="text"
+                                class="query-input"
+                                placeholder="Ask about your data..."
+                                id="query-input"
+                            />
+                            <button class="query-history-btn" id="query-history-btn" title="View chat history">
+                                <span>💬</span>
+                            </button>
+                            <button class="query-send-btn" id="query-send-btn">→</button>
+                        </div>
+                        <div class="query-suggestions" id="query-suggestions">
+                            <button class="query-suggestion">What drove performance?</button>
+                            <button class="query-suggestion">Compare ROI across channels</button>
+                            <button class="query-suggestion">Show top insights</button>
+                        </div>
+                        <div class="query-expanded" id="query-expanded">
+                            <div class="query-response">
+                                <div class="query-response-header">
+                                    <div class="response-header">
+                                        <div class="response-avatar">AI</div>
+                                        <div class="response-meta">
+                                            <span class="response-title">Strategy Assistant</span>
+                                            <span class="confidence-badge-small">95%</span>
+                                        </div>
+                                    </div>
+                                    <button class="query-close-btn" id="query-close-btn">✕</button>
+                                </div>
+                                <div class="response-content" id="response-content"></div>
+                                <div class="response-actions">
+                                    <button class="response-action-btn" id="add-insight-btn">+ Add to Slide</button>
+                                    <button class="response-action-btn secondary">Continue in Teams →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Template Selection -->
+                    <div id="step-template" class="step-content active">
+                        <div class="extension-content">
+                            <h2 class="section-title">Select Template Type</h2>
+                            <p class="section-description">Choose the section you want to create</p>
+
+                            <div class="template-list">
+                                <div class="template-card" data-template="brand-slides">
+                                    <div class="template-icon">📊</div>
+                                    <div class="template-info">
+                                        <h3>Brand Performance Slides</h3>
+                                        <p>Brand-channel analysis</p>
+                                    </div>
+                                    <div class="template-arrow">→</div>
+                                </div>
+
+                                <div class="template-card" data-template="exec-summary">
+                                    <div class="template-icon">📈</div>
+                                    <div class="template-info">
+                                        <h3>BU Executive Summary</h3>
+                                        <p>High-level overview</p>
+                                    </div>
+                                    <div class="template-arrow">→</div>
+                                </div>
+
+                                <div class="template-card" data-template="sos-som">
+                                    <div class="template-icon">📉</div>
+                                    <div class="template-info">
+                                        <h3>SoS/SoM Update</h3>
+                                        <p>Market share metrics</p>
+                                    </div>
+                                    <div class="template-arrow">→</div>
+                                </div>
+
+                                <div class="template-card" data-template="post-meeting">
+                                    <div class="template-icon">✓</div>
+                                    <div class="template-info">
+                                        <h3>Post-Meeting Actions</h3>
+                                        <p>Follow-ups from last meeting</p>
+                                    </div>
+                                    <div class="template-arrow">→</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Brand Selection (for brand-slides) -->
+                    <div id="step-brand" class="step-content">
+                        <div class="extension-content">
+                            <div class="breadcrumb">
+                                <button class="breadcrumb-link" id="breadcrumb-template">Template</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <span class="breadcrumb-current">Brand</span>
+                            </div>
+
+                            <h2 class="section-title">Select Brand</h2>
+                            <p class="section-description">Choose which brand</p>
+
+                            <div class="brand-list">
+                                <div class="brand-card special" data-brand="all">
+                                    <div class="brand-name">All Brands</div>
+                                    <div class="brand-arrow">→</div>
+                                </div>
+                                <div class="brand-card" data-brand="dove">
+                                    <div class="brand-name">Dove</div>
+                                    <div class="brand-arrow">→</div>
+                                </div>
+                                <div class="brand-card" data-brand="tresemme">
+                                    <div class="brand-name">TRESemmé</div>
+                                    <div class="brand-arrow">→</div>
+                                </div>
+                                <div class="brand-card" data-brand="vaseline">
+                                    <div class="brand-name">Vaseline</div>
+                                    <div class="brand-arrow">→</div>
+                                </div>
+                                <div class="brand-card" data-brand="nexxus">
+                                    <div class="brand-name">Nexxus</div>
+                                    <div class="brand-arrow">→</div>
+                                </div>
+                                <div class="brand-card" data-brand="shea-moisture">
+                                    <div class="brand-name">Shea Moisture</div>
+                                    <div class="brand-arrow">→</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Channel Selection -->
+                    <div id="step-channel" class="step-content">
+                        <div class="extension-content">
+                            <div class="breadcrumb">
+                                <button class="breadcrumb-link" id="breadcrumb-template-2">Template</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <button class="breadcrumb-link" id="breadcrumb-brand">Brand</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <span class="breadcrumb-current">Channel</span>
+                            </div>
+
+                            <h2 class="section-title">Select Channel</h2>
+                            <p class="section-description"><span id="selected-brand-name">Dove</span> channel</p>
+
+                            <div class="channel-list">
+                                <div class="channel-card special" id="select-all-channels">
+                                    <input type="checkbox" class="channel-checkbox" id="channel-all">
+                                    <label for="channel-all">All Channels</label>
+                                </div>
+                                <div class="channel-card" data-channel="national">
+                                    <input type="checkbox" class="channel-checkbox" id="channel-national">
+                                    <label for="channel-national">National</label>
+                                </div>
+                                <div class="channel-card" data-channel="social">
+                                    <input type="checkbox" class="channel-checkbox" id="channel-social">
+                                    <label for="channel-social">Social</label>
+                                </div>
+                                <div class="channel-card" data-channel="paid-search">
+                                    <input type="checkbox" class="channel-checkbox" id="channel-paid-search">
+                                    <label for="channel-paid-search">Paid Search</label>
+                                </div>
+                                <div class="channel-card" data-channel="mikmak">
+                                    <input type="checkbox" class="channel-checkbox" id="channel-mikmak">
+                                    <label for="channel-mikmak">MikMak</label>
+                                </div>
+                            </div>
+
+                            <div class="action-section">
+                                <button class="primary-btn" id="continue-to-preview">Continue →</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Preview for other templates -->
+                    <div id="step-preview-other" class="step-content">
+                        <div class="extension-content">
+                            <div class="breadcrumb">
+                                <button class="breadcrumb-link" id="breadcrumb-template-other">Template</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <span class="breadcrumb-current">Preview</span>
+                            </div>
+
+                            <h2 class="section-title">Review Slides</h2>
+                            <p class="section-description" id="preview-other-description">These slides will be generated</p>
+
+                            <div class="preview-summary">
+                                <div class="summary-card">
+                                    <div class="summary-number" id="other-slide-count">5</div>
+                                    <div class="summary-label">Slides</div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-number">~3min</div>
+                                    <div class="summary-label">Est. Time</div>
+                                </div>
+                            </div>
+
+                            <div class="slide-preview-list" id="other-preview-list">
+                                <!-- Will be populated dynamically -->
+                            </div>
+
+                            <div class="action-section">
+                                <button class="primary-btn" id="generate-other-slides-btn">
+                                    <span class="btn-icon">✨</span>
+                                    Generate Slides
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Preview for brand slides -->
+                    <div id="step-preview" class="step-content">
+                        <div class="extension-content">
+                            <div class="breadcrumb">
+                                <button class="breadcrumb-link" id="breadcrumb-template-3">Template</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <button class="breadcrumb-link" id="breadcrumb-brand-2">Brand</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <button class="breadcrumb-link" id="breadcrumb-channel">Channel</button>
+                                <span class="breadcrumb-separator">›</span>
+                                <span class="breadcrumb-current">Preview</span>
+                            </div>
+
+                            <h2 class="section-title">Review Slides</h2>
+                            <p class="section-description"><span id="preview-selections">Preview</span></p>
+
+                            <div class="progress-tracker" id="progress-tracker">
+                                <div class="progress-tracker-header">
+                                    <span class="progress-tracker-title">Progress</span>
+                                    <span class="progress-tracker-count"><span id="completed-count">0</span> of <span id="total-combos">0</span> completed</span>
+                                </div>
+                                <div class="progress-tracker-bar">
+                                    <div class="progress-tracker-fill" id="progress-fill"></div>
+                                </div>
+                                <div class="progress-tracker-items" id="progress-tracker-items">
+                                    <!-- Dynamic progress items will be inserted here -->
+                                </div>
+                            </div>
+
+                            <div class="preview-summary">
+                                <div class="summary-card">
+                                    <div class="summary-number" id="total-slide-count">6</div>
+                                    <div class="summary-label">Slides Selected</div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-number">~4min</div>
+                                    <div class="summary-label">Est. Time</div>
+                                </div>
+                            </div>
+
+                            <div class="slide-preview-list" id="brand-preview-list">
+                                <!-- Will be populated dynamically -->
+                            </div>
+
+                            <div class="action-section">
+                                <button class="primary-btn" id="generate-slides-btn">
+                                    <span class="btn-icon">✨</span>
+                                    <span id="generate-btn-text">Generate 6 Slides</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Generating -->
+                    <div id="step-generating" class="step-content">
+                        <div class="extension-content centered">
+                            <div class="loading-animation">
+                                <div class="spinner"></div>
+                            </div>
+                            <h2 class="section-title">Generating Slides...</h2>
+                            <p class="section-description">Creating your slides</p>
+
+                            <div class="progress-list">
+                                <div class="progress-item completed">
+                                    <div class="progress-icon">✓</div>
+                                    <div class="progress-text">Analyzing data</div>
+                                </div>
+                                <div class="progress-item completed">
+                                    <div class="progress-icon">✓</div>
+                                    <div class="progress-text">Computing metrics</div>
+                                </div>
+                                <div class="progress-item active">
+                                    <div class="progress-icon">
+                                        <div class="small-spinner"></div>
+                                    </div>
+                                    <div class="progress-text">Creating visualizations</div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-icon">○</div>
+                                    <div class="progress-text">Building layouts</div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-icon">○</div>
+                                    <div class="progress-text">Inserting slides</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 7: Success -->
+                    <div id="step-success" class="step-content">
+                        <div class="extension-content">
+                            <div class="success-header">
+                                <div class="success-icon">✓</div>
+                                <h2 class="section-title"><span id="success-count">Slides</span> Added</h2>
+                                <p class="section-description" id="success-description">Successfully generated</p>
+                            </div>
+
+                            <div class="insights-section">
+                                <h3 class="insights-title">Additional Insights</h3>
+                                <p class="insights-subtitle">Add these to your slides</p>
+
+                                <div class="insight-card">
+                                    <div class="insight-header">
+                                        <span class="insight-type">💡 Alert</span>
+                                        <span class="confidence-badge-small">95%</span>
+                                    </div>
+                                    <p class="insight-text">Legacy channels significantly above benchmark, suggesting over-performance in ROI.</p>
+                                    <button class="insight-btn">+ Add to Slide</button>
+                                </div>
+
+                                <div class="insight-card">
+                                    <div class="insight-header">
+                                        <span class="insight-type">📊 Opportunity</span>
+                                        <span class="confidence-badge-small">92%</span>
+                                    </div>
+                                    <p class="insight-text">ROI can improve by ~260% with optimized channel allocation.</p>
+                                    <button class="insight-btn">+ Add to Slide</button>
+                                </div>
+                            </div>
+
+                            <div class="action-section">
+                                <button class="primary-btn" id="create-more-btn">+ Create More Slides</button>
+                                <button class="secondary-btn" id="done-btn">Done</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
