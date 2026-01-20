@@ -720,6 +720,21 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.progress-expand-btn {
+    background: transparent;
+    border: none;
+    color: #605e5c;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px;
+    transition: transform 0.2s;
+}
+
+.progress-expand-btn.expanded {
+    transform: rotate(180deg);
 }
 
 .progress-tracker-title {
@@ -817,11 +832,28 @@ body {
     background: #f3f2f1;
     padding: 2px 8px;
     border-radius: 10px;
+    margin-right: 6px;
 }
 
 .progress-item.completed .progress-item-status {
     background: #c8e6c9;
     color: #107c10;
+}
+
+.progress-item-go-btn {
+    background: #0078d4;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.progress-item-go-btn:hover {
+    background: #005a9e;
 }
 
 /* Preview Summary */

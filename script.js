@@ -5,8 +5,13 @@ const state = {
     selectedBrand: null,
     selectedChannels: [],
     currentStep: 'workspace-selection',
-    generatedSlides: []
+    generatedSlides: [],
+    completedCombos: new Set() // Tracks completed brand-channel combinations as "brand:channel"
 };
+
+// Available brands and channels
+const brands = ['dove', 'tresemme', 'vaseline', 'nexxus', 'shea-moisture'];
+const channels = ['national', 'social', 'paid-search', 'mikmak'];
 
 // Template definitions
 const templates = {
@@ -60,6 +65,7 @@ const templates = {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeEventListeners();
+    initializeProgressTracker();
 });
 
 function initializeEventListeners() {
@@ -392,6 +398,14 @@ function showGeneratedSlides() {
         ).join(', ');
         document.getElementById('success-description').textContent =
             `${brandName} - ${channelNames}`;
+
+        // Mark brand-channel combinations as completed
+        state.selectedChannels.forEach(channel => {
+            state.completedCombos.add(`${state.selectedBrand}:${channel}`);
+        });
+
+        // Update progress tracker
+        updateProgressTracker();
     } else {
         document.getElementById('success-description').textContent = templateDef.name;
     }
@@ -590,6 +604,74 @@ function capitalizeWords(str) {
     return str.split(' ').map(word =>
         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
     ).join(' ');
+}
+
+// Progress Tracker Functions
+function initializeProgressTracker() {
+    updateProgressTracker();
+
+    // Toggle expand/collapse
+    document.getElementById('progress-tracker-toggle')?.addEventListener('click', () => {
+        const details = document.getElementById('progress-details');
+        const expandBtn = document.getElementById('progress-expand-btn');
+
+        if (details.style.display === 'none') {
+            details.style.display = 'flex';
+            expandBtn.classList.add('expanded');
+        } else {
+            details.style.display = 'none';
+            expandBtn.classList.remove('expanded');
+        }
+    });
+}
+
+function updateProgressTracker() {
+    const totalCombos = brands.length * channels.length;
+    const completedCount = state.completedCombos.size;
+    const percentage = (completedCount / totalCombos) * 100;
+
+    // Update count and progress bar
+    document.getElementById('progress-count').textContent = `${completedCount} of ${totalCombos} completed`;
+    document.getElementById('progress-fill').style.width = `${percentage}%`;
+
+    // Build brand breakdown
+    const progressDetails = document.getElementById('progress-details');
+    progressDetails.innerHTML = '';
+
+    brands.forEach(brand => {
+        const brandName = capitalizeWords(brand.replace(/-/g, ' '));
+        const completedChannels = channels.filter(channel =>
+            state.completedCombos.has(`${brand}:${channel}`)
+        ).length;
+
+        const item = document.createElement('div');
+        item.className = `progress-item ${completedChannels === channels.length ? 'completed' : ''}`;
+        item.innerHTML = `
+            <div class="progress-item-info">
+                <div class="progress-item-icon">${completedChannels === channels.length ? '✓' : brand.charAt(0).toUpperCase()}</div>
+                <div class="progress-item-text">${brandName}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-item-status">${completedChannels}/${channels.length}</div>
+                <button class="progress-item-go-btn" data-brand="${brand}">Go</button>
+            </div>
+        `;
+
+        // Add click handler for Go button
+        const goBtn = item.querySelector('.progress-item-go-btn');
+        goBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            jumpToBrand(brand);
+        });
+
+        progressDetails.appendChild(item);
+    });
+}
+
+function jumpToBrand(brand) {
+    // Pre-select the brand and go to channel selection
+    state.selectedTemplate = 'brand-slides';
+    selectBrand(brand);
 }
 
 // Keyboard shortcuts
